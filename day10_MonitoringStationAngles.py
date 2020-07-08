@@ -3,6 +3,17 @@ RAW = '''.#..#
 #####
 ....#
 ...##'''
+
+RAW = '''......#.#.
+#..#.#....
+..#######.
+.#.#.###..
+.#..#.....
+..#....#.#
+#..#....#.
+.##.#..###
+##...#..#.
+.#....####'''
 # with open()
 board = list(map(list, RAW.split('\n')))
 print(board)
@@ -30,74 +41,102 @@ for y in range(len(board)):
                             if board[y+i][x+j] == '#':
                                 if j != 0:
                                     if (i,j) not in positions: 
-                                        seen.append((i/j, 2))
+                                        seen.append((i/j))
                                         positions.append((i, j))
                                 else:
-                                    if (dummy,  False) not in positions:
-                                        seen.append((dummy, 2))
-                                        positions.append((dummy,  2))
+                                    if (dummy, 2) not in positions:
+                                        seen.append((dummy))
+                                        positions.append((dummy))
                                 # board[y+i][x+j] = 'A'
                         if 0 <= y + i < len(board) and 0 <= x-j <len(board[0]):
                             if board[y+i][x-j] == '#':
                                 if j != 0:
                                     if (i,-j) not in positions: 
-                                        seen.append((i/-j, 0))
+                                        seen.append((i/-j))
                                         positions.append((i, -j))
                                 else:
-                                    if (dummy,  0) not in positions:
-                                        seen.append((dummy, 0))
-                                        positions.append((dummy,  0))
+                                    if (dummy, 0) not in positions:
+                                        seen.append((dummy))
+                                        positions.append((dummy))
                                 # board[y+i][x-j] = 'A'
                         if 0 <= y - i < len(board) and 0 <= x+j <len(board[0]):
                             if board[y-i][x+j] == '#':
                                 if j != 0:
                                     if (-i,j) not in positions: 
-                                        seen.append((-i/j, 1))
+                                        seen.append((-i/j))
                                         positions.append((-i, j))
                                 else:
-                                    if (dummy,  1) not in positions:
-                                        seen.append((dummy, 1))
-                                        positions.append((dummy,  1))
+                                    if (dummy, 1) not in positions:
+                                        seen.append((dummy))
+                                        positions.append((dummy))
                                 # board[y-i][x+j] = 'A'
                         if 0 <= y - i < len(board) and 0 <= x-j <len(board[0]):
                             if board[y-i][x-j] == '#':
                                 if j != 0:
                                     if (-i,-j) not in positions: 
-                                        seen.append((-i/-j, 3))
+                                        seen.append((-i/-j))
                                         positions.append((-i, -j))
                                 else:
-                                    if (dummy,  3) not in positions:
-                                        seen.append((dummy, 3))
-                                        positions.append((dummy,  3))
+                                    if (dummy, 2) not in positions:
+                                        seen.append((dummy))
+                                        positions.append((dummy))
                                 # board[y-i][x-j] = 'A'
                     except Exception as ex:
                         print(ex)
                         continue
-            seen = set(seen)
-            print(seen)
-            positions = set(positions)
+            # seen = set(seen)
+            # print(seen)
+            # positions = set(positions)
             positionMap[(x,y)] = positions
-            asteroidMapCount[(x,y)] = len(seen)
+            asteroidMapCount[(x,y)] = len(positions)
             visible[(x,y)] = seen
-            if len(seen) > maxSeen:
-                maxSeen = len(seen)
+            if len(positions) > maxSeen:
+                maxSeen = len(positions)
                 pos = (x, y)
             # maxSeen = max(maxSeen, len(seen))
 # print(pos)
 # print(set(pos))
-print(maxSeen)
+# print(maxSeen)
 print(asteroidMapCount)
 # for i in asteroidMapCount[(1,2)]:
 
 # print(visible[(1,2)])
 # print(pos)
 # print(positionMap[(1,2)])
+givenAnswerPos = pos
+print(pos)
+answerPositionsYX = []
+for i in positionMap[givenAnswerPos]:
+    if i == 1000:
+        continue
+    slopes = [x[2] for x in answerPositionsYX]
+    cur = i[0]/i[1]
+
+    if cur not in slopes:
+        answerPositionsYX.append((i[0], i[1], cur))
+    else:
+        potentials = []
+        for k in answerPositionsYX:
+            if k[2] == cur:
+                potentials.append(k)
+        works = True
+        for k in potentials:
+            if not((k[0] >= 0) != (i[0] >= 0) or (k[1] >= 0) != (i[1] >= 0)):
+                works = False
+                break
+        if works:
+            answerPositionsYX.append((i[0], i[1], cur))
+        else:
+            print('not found', answerPositionsYX[slopes.index(cur)])
+board[givenAnswerPos[1]][givenAnswerPos[0]] = 'S'
 # for i in board:
 #     print("".join(i))
-# for i in positionMap[(1,2)]:
-#     print(i)
-#     if i[0] != dummy:
-#         board[2 + i[0]][1 + i[1]] = 'A'
-# print()
-# for i in board:
-#     print("".join(i))
+for j in answerPositionsYX:
+    i = (j[0], j[1])
+    # print(i)
+    if i != dummy:
+        board[givenAnswerPos[1] + i[0]][givenAnswerPos[0] + i[1]] = 'A'
+print()
+for i in board:
+    print("".join(i))
+print(len(answerPositionsYX))
