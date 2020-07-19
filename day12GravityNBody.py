@@ -76,12 +76,7 @@ for t in trange(500000):
     for i in range(len(velocities)):
         for n in range(3):
             c[i][n] += velocities[i][n]
-    # if t % 5000 == 0:
-    #     print(t)
-    # if t > 2750:
-    #     print(t)
-    #     print('positions', c)
-    #     print('vel',velocities)
+
     for k in range(3):
         if k in foundXYZ:
             continue
@@ -96,52 +91,13 @@ for t in trange(500000):
             posesSeen[k].append(both)
         else:
             foundXYZ.append(k)
-        # v1 = copy.deepcopy(velocities[k])
 
-        # velocityRepeatTimes[k][tuple(v1)] += 1
-        # velocitiesSeen[k].append(tuple(v1))
-        # if p1 not in posesSeen[k]:
-        #     posesSeen[k].append(p1)
-        # else:
-        #     # print(posesSeen[-1])
-        #     posesSeen[k].append(p1)
-            # print(p1)
-
-    # for k in range(4):
-
-        # if v1 not in velocitiesSeen[k]:
-        #     velocitiesSeen[k].append(v1)
-        # else:
-        #     # print(posesSeen[-1])
-        #     velocitiesSeen[k].append(v1)
-            # print(p1)
-        # pass
-    # if(t % 1000 == 0):
-    #     print(t)
-    # if t == 12000:
-    #     total = 1
-    #     for k in range(4):
-    #         commonVel =velocityRepeatTimes[k].most_common(3) 
-    #         commonPos = posRepeatTimes[k].most_common(3)
-    #         print(commonVel)
-    #         print(commonPos)
-    #         # if total == 1:
-    #         #     total = lcm(commonVel[0][0], commonPos[0][0])
-    #         #     print(total)
-    #         total = lcm(total, commonVel[0][0])
-    #         total = lcm(total, commonPos[0][0])
-    #     print(total)
-    #     break
 total = 1
 for k in range(3):
-    # commonVel =velocityRepeatTimes[k].most_common(3) 
     commonPos = posRepeatTimes[k].most_common(3)
-    # print(commonVel)
     print(commonPos)
     print(commonPos[0][0])
-    # first = velocitiesSeen[k].index(commonVel[0][0])
-    # second = velocitiesSeen[k].index(commonVel[0][0], first + 1)
-    # print(second - first)
+
     firstPos = posesSeen[k].index(commonPos[0][0])
     secondPos = posesSeen[k].index(commonPos[0][0], firstPos + 1)
     print(firstPos)
@@ -149,34 +105,3 @@ for k in range(3):
     print(secondPos - firstPos)
     total = lcm(total, secondPos - firstPos)
 print(total)
-    # print(secondPos - firstPos)
-    # if total == 1:
-    #     total = lcm(commonVel[0][0], commonPos[0][0])
-    #     print(total)
-    # total = lcm(total, commonVel[0][0])
-    # total = lcm(total, commonPos[0][0])
-# print(total)
-    #     # print(velocitiesSeen)
-    #     print(posesSeen)
-    #     break
-        # print('saw same velocity')
-        # print(t)
-    #     # break
-    # z = (copy.deepcopy(c), copy.deepcopy(velocities))
-    # if z not in seen:
-    #     seen.append(z)
-    #     # print(seen)
-    # else:
-    #     # pass
-    #     print(t)
-    #     print(z)
-    #     print(seen[-1])
-    #     # print(seen[0])
-    #     break
-    # print(c)
-# for i in range(len(c)):
-#     potential += sum(list(map(abs, c[i]))) * sum(list(map(abs, velocities[i])))
-# print(seen)
-# print(potential)
-# print(kinetic)
-# print(potential )
